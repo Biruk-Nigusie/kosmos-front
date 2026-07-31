@@ -16,7 +16,6 @@ import {
   PenLine,
   Users,
   RotateCcw,
-  Rocket,
   Telescope,
 } from "lucide-react";
 import {
@@ -35,7 +34,6 @@ import { cn } from "@/utils/cn";
 
 // Defined outside Sidebar so it's never recreated on render
 const NoteTypeMenu = ({
-  folderId,
   menuRef,
   onSelect,
 }: {

@@ -138,7 +138,7 @@ export const NoteEditor = ({ noteId, onDeleted }: Props) => {
     }, 5000);
   }, []);
 
-  const { connected, activeUsers, sendDocUpdate, sendTitleUpdate, sendCanvasDraw, sendCanvasClear, sendCanvasUndo, sendCursorMove } = useNoteWs({
+  const { activeUsers, sendDocUpdate, sendTitleUpdate, sendCanvasDraw, sendCanvasClear, sendCanvasUndo, sendCursorMove } = useNoteWs({
     noteId,
     onDocUpdate: (incoming) => {
       isRemoteUpdate.current = true;
