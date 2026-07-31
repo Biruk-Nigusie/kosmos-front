@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://kosmos-core.onrender.com",
+  baseURL: "https://kosmos-core-1.onrender.com",
   withCredentials: true,
 });
 
