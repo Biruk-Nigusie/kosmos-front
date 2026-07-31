@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { X, Upload, Loader2, LogOut, User } from "lucide-react";
-import { getProfile, updateProfile, logoutUser, logoutAllDevices } from "@/api/notes";
+import { getProfile, updateProfile, logoutAllDevices } from "@/api/notes";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/store/authStore";

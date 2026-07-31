@@ -8,7 +8,9 @@ import { Button } from "@/components/ui/Button";
 import { useThemeStore, type FontSize } from "@/store/themeStore";
 import { cn } from "@/utils/cn";
 
-interface Props { onClose: () => void; }
+interface Props {
+  onClose: () => void;
+}
 
 interface FormValues {
   notification_enabled: boolean;
@@ -27,27 +29,42 @@ const FONT_SIZES: FontSize[] = ["small", "medium", "large"];
 export const SettingsModal = ({ onClose }: Props) => {
   const qc = useQueryClient();
   const {
-    fontSize: curFontSize, highContrastMode: curHC, sidebarCollapsed: curSC, keyboardShortcuts: curKS,
-    defaultEditorView: curDEV, notificationsEnabled: curNE, notifMentions: curNM, notifSharedNotes: curNSN, notifDigestEmails: curNDE,
-    setFontSize, setHighContrast, setSidebarCollapsed, setKeyboardShortcuts, setDefaultEditorView, setNotifications,
+    fontSize: curFontSize,
+    highContrastMode: curHC,
+    sidebarCollapsed: curSC,
+    keyboardShortcuts: curKS,
+    defaultEditorView: curDEV,
+    notifMentions: curNM,
+    notifSharedNotes: curNSN,
+    notifDigestEmails: curNDE,
+    setFontSize,
+    setHighContrast,
+    setSidebarCollapsed,
+    setKeyboardShortcuts,
+    setDefaultEditorView,
+    setNotifications,
   } = useThemeStore();
 
-  const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: getSettings });
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: getSettings,
+  });
   const mounted = useRef(false);
 
-  const { register, handleSubmit, reset, watch, setValue } = useForm<FormValues>({
-    defaultValues: {
-      notification_enabled: false,
-      fontSize: curFontSize,
-      highContrastMode: curHC,
-      keyboardShortcuts: curKS,
-      sidebarCollapsed: curSC,
-      defaultEditorView: curDEV,
-      notif_mentions: curNM,
-      notif_sharedNotes: curNSN,
-      notif_digestEmails: curNDE,
-    },
-  });
+  const { register, handleSubmit, reset, watch, setValue } =
+    useForm<FormValues>({
+      defaultValues: {
+        notification_enabled: false,
+        fontSize: curFontSize,
+        highContrastMode: curHC,
+        keyboardShortcuts: curKS,
+        sidebarCollapsed: curSC,
+        defaultEditorView: curDEV,
+        notif_mentions: curNM,
+        notif_sharedNotes: curNSN,
+        notif_digestEmails: curNDE,
+      },
+    });
 
   const watchedFontSize = watch("fontSize");
   const watchedHC = watch("highContrastMode");
@@ -71,7 +88,10 @@ export const SettingsModal = ({ onClose }: Props) => {
 
   // Live preview font size
   useEffect(() => {
-    if (!mounted.current) { mounted.current = true; return; }
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
     setFontSize(watchedFontSize);
   }, [watchedFontSize]);
 
@@ -103,7 +123,12 @@ export const SettingsModal = ({ onClose }: Props) => {
       setSidebarCollapsed(d.sidebarCollapsed);
       setKeyboardShortcuts(d.keyboardShortcuts);
       setDefaultEditorView(d.defaultEditorView);
-      setNotifications(d.notification_enabled, d.notif_mentions, d.notif_sharedNotes, d.notif_digestEmails);
+      setNotifications(
+        d.notification_enabled,
+        d.notif_mentions,
+        d.notif_sharedNotes,
+        d.notif_digestEmails,
+      );
       qc.invalidateQueries({ queryKey: ["settings"] });
       toast.success("Settings saved");
       onClose();
@@ -114,27 +139,43 @@ export const SettingsModal = ({ onClose }: Props) => {
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-base-100 rounded-xl shadow-xl w-full max-w-md p-6 relative max-h-[90vh] overflow-y-auto">
-        <button onClick={onClose} className="absolute top-4 right-4 text-base-content/40 hover:text-base-content">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-base-content/40 hover:text-base-content"
+        >
           <X size={18} />
         </button>
         <h2 className="text-xl font-bold mb-5 text-base-content">Settings</h2>
 
-        <form onSubmit={handleSubmit((d) => save.mutate(d))} className="space-y-5">
-
+        <form
+          onSubmit={handleSubmit((d) => save.mutate(d))}
+          className="space-y-5"
+        >
           {/* Font Size */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-base-content">Font Size</label>
+            <label className="text-sm font-medium text-base-content">
+              Font Size
+            </label>
             <div className="grid grid-cols-3 gap-2">
               {FONT_SIZES.map((size) => (
-                <button key={size} type="button"
-                  onClick={() => setValue("fontSize", size, { shouldDirty: true })}
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() =>
+                    setValue("fontSize", size, { shouldDirty: true })
+                  }
                   className={cn(
                     "py-2 rounded-lg border-2 capitalize transition-all",
-                    size === "small" ? "text-sm" : size === "large" ? "text-lg" : "text-base",
+                    size === "small"
+                      ? "text-sm"
+                      : size === "large"
+                        ? "text-lg"
+                        : "text-base",
                     watchedFontSize === size
                       ? "border-[#4C72AA] bg-[#4C72AA]/10 text-[#4C72AA]"
                       : "border-base-300 hover:border-[#4C72AA]/40 text-base-content/60",
-                  )}>
+                  )}
+                >
                   {size}
                 </button>
               ))}
@@ -144,17 +185,24 @@ export const SettingsModal = ({ onClose }: Props) => {
 
           {/* Default Editor View */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-base-content">Default Editor View</label>
+            <label className="text-sm font-medium text-base-content">
+              Default Editor View
+            </label>
             <div className="grid grid-cols-2 gap-2">
               {(["rich-text", "markdown"] as const).map((v) => (
-                <button key={v} type="button"
-                  onClick={() => setValue("defaultEditorView", v, { shouldDirty: true })}
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() =>
+                    setValue("defaultEditorView", v, { shouldDirty: true })
+                  }
                   className={cn(
                     "py-2 rounded-lg border-2 text-sm transition-all capitalize",
                     watch("defaultEditorView") === v
                       ? "border-[#4C72AA] bg-[#4C72AA]/10 text-[#4C72AA]"
                       : "border-base-300 hover:border-[#4C72AA]/40 text-base-content/60",
-                  )}>
+                  )}
+                >
                   {v}
                 </button>
               ))}
@@ -163,44 +211,88 @@ export const SettingsModal = ({ onClose }: Props) => {
 
           {/* Accessibility & UI */}
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-base-content/40 uppercase tracking-widest">Accessibility & UI</p>
-            {([
-              ["highContrastMode", "High Contrast Mode", "Increases text/border contrast across the app"],
-              ["keyboardShortcuts", "Keyboard Shortcuts", "Enable Ctrl+Z undo and other shortcuts"],
-              ["sidebarCollapsed", "Collapse Sidebar by Default", "Hide sidebar when opening notes"],
-            ] as const).map(([field, label, hint]) => (
-              <div key={field} className="flex items-start justify-between gap-4">
+            <p className="text-xs font-semibold text-base-content/40 uppercase tracking-widest">
+              Accessibility & UI
+            </p>
+            {(
+              [
+                [
+                  "highContrastMode",
+                  "High Contrast Mode",
+                  "Increases text/border contrast across the app",
+                ],
+                [
+                  "keyboardShortcuts",
+                  "Keyboard Shortcuts",
+                  "Enable Ctrl+Z undo and other shortcuts",
+                ],
+                [
+                  "sidebarCollapsed",
+                  "Collapse Sidebar by Default",
+                  "Hide sidebar when opening notes",
+                ],
+              ] as const
+            ).map(([field, label, hint]) => (
+              <div
+                key={field}
+                className="flex items-start justify-between gap-4"
+              >
                 <div>
                   <p className="text-sm text-base-content">{label}</p>
                   <p className="text-xs text-base-content/40">{hint}</p>
                 </div>
-                <input type="checkbox" {...register(field)} className="toggle toggle-sm mt-0.5 shrink-0" />
+                <input
+                  type="checkbox"
+                  {...register(field)}
+                  className="toggle toggle-sm mt-0.5 shrink-0"
+                />
               </div>
             ))}
           </div>
 
           {/* Notifications */}
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-base-content/40 uppercase tracking-widest">Notifications</p>
+            <p className="text-xs font-semibold text-base-content/40 uppercase tracking-widest">
+              Notifications
+            </p>
             <div className="flex items-center justify-between">
-              <label className="text-sm text-base-content">Enable Notifications</label>
-              <input type="checkbox" {...register("notification_enabled")} className="toggle toggle-sm" />
+              <label className="text-sm text-base-content">
+                Enable Notifications
+              </label>
+              <input
+                type="checkbox"
+                {...register("notification_enabled")}
+                className="toggle toggle-sm"
+              />
             </div>
-            {([
-              ["notif_mentions", "Mentions"],
-              ["notif_sharedNotes", "Shared Notes"],
-              ["notif_digestEmails", "Digest Emails"],
-            ] as const).map(([field, label]) => (
-              <div key={field} className="flex items-center justify-between pl-4 border-l-2 border-base-300">
+            {(
+              [
+                ["notif_mentions", "Mentions"],
+                ["notif_sharedNotes", "Shared Notes"],
+                ["notif_digestEmails", "Digest Emails"],
+              ] as const
+            ).map(([field, label]) => (
+              <div
+                key={field}
+                className="flex items-center justify-between pl-4 border-l-2 border-base-300"
+              >
                 <label className="text-sm text-base-content/70">{label}</label>
-                <input type="checkbox" {...register(field)} className="toggle toggle-sm" />
+                <input
+                  type="checkbox"
+                  {...register(field)}
+                  className="toggle toggle-sm"
+                />
               </div>
             ))}
           </div>
 
           <div className="flex justify-end gap-2 pt-1">
-            <Button variant="ghost" type="button" onClick={onClose}>Cancel</Button>
-            <Button type="submit" loading={save.isPending}>Save</Button>
+            <Button variant="ghost" type="button" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" loading={save.isPending}>
+              Save
+            </Button>
           </div>
         </form>
       </div>

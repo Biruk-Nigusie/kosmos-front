@@ -71,7 +71,7 @@ export const NoteEditor = ({ noteId, onDeleted }: Props) => {
   const authUser = useAuthStore((s) => s.user);
   const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: getProfile });
   const myDisplayName = profile?.display_name || authUser?.email || "Me";
-  const { keyboardShortcuts, defaultEditorView, notificationsEnabled, notifSharedNotes, notifMentions } = useThemeStore();
+  const { keyboardShortcuts, defaultEditorView, notificationsEnabled, notifSharedNotes } = useThemeStore();
 
   const { data: note, isLoading } = useQuery({
     queryKey: ["note", noteId],

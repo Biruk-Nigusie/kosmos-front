@@ -30,7 +30,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const clearAuth = useAuthStore((s) => s.clearAuth);
-  const authUser = useAuthStore((s) => s.user);
   const { mode, setMode } = useThemeStore();
   const [showProfile, setShowProfile] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
