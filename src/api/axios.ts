@@ -1,12 +1,15 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://kosmos-core.onrender.com",
   withCredentials: true,
 });
 
 let isRefreshing = false;
-let failedQueue: Array<{ resolve: (v: any) => void; reject: (e: any) => void }> = [];
+let failedQueue: Array<{
+  resolve: (v: any) => void;
+  reject: (e: any) => void;
+}> = [];
 
 const processQueue = (error: any) => {
   failedQueue.forEach((p) => (error ? p.reject(error) : p.resolve(null)));
@@ -28,7 +31,9 @@ axiosInstance.interceptors.response.use(
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
-        }).then(() => axiosInstance(original)).catch((e) => Promise.reject(e));
+        })
+          .then(() => axiosInstance(original))
+          .catch((e) => Promise.reject(e));
       }
 
       original._retry = true;
